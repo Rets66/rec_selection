@@ -15,31 +15,6 @@ class MyHTTPServer(HTTPServer):
 
 
 class MyHTTPRequestHandler(BaseHTTPRequestHandler):
-    def _set_response_ok(self):
-        # 200
-        self.send_response(http.HTTPStatus.OK)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-    def _set_response_authenticate(self):
-        # 401
-        self.send_response(http.HTTPStatus.UNAUTHORIZED)
-        self.send_header('WWW-Authenticate', 'Basic realm=\"Authentication required\"')
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-    def _set_response_not_found(self):
-        # 404
-        self.send_response(http.HTTPStatus.NOT_FOUND)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-    def _set_response_bad_request(self):
-        # 400
-        self.send_response(http.HTTPStatus.BAD_REQUEST)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
     def do_POST(self):
         parser = urllib.parse.urlparse(self.path)
         logging.info(f"GET request\n"
@@ -133,6 +108,30 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             res = json.dumps(msg)
             self.wfile.write(res.encode())
 
+    def _set_response_ok(self):
+        # 200
+        self.send_response(http.HTTPStatus.OK)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+    def _set_response_authenticate(self):
+        # 401
+        self.send_response(http.HTTPStatus.UNAUTHORIZED)
+        self.send_header('WWW-Authenticate', 'Basic realm=\"Authentication required\"')
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+    def _set_response_not_found(self):
+        # 404
+        self.send_response(http.HTTPStatus.NOT_FOUND)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+    def _set_response_bad_request(self):
+        # 400
+        self.send_response(http.HTTPStatus.BAD_REQUEST)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
 
 class UserDatabase:
     def __init__(self):
