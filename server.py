@@ -82,8 +82,12 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             return
 
         user_id, password = json_data['user_id'], json_data['password']
+        nickname, comment = json_data['nickname'], json_data['comment']
+
         assert type(user_id) == str
         assert type(password) == str
+        assert type(nickname) == str
+        assert type(comment) == str
 
         # Validate value lengths
         if not (6 <= len(user_id) <= 20 and 8 <= len(password) <= 20):
@@ -107,7 +111,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(res.encode())
             return
 
-        succ = self.server.user_database.add_user(user_id, password)
+        succ = self.server.user_database.add_user(user_id, password, nickname, comment)
 
         if succ:
             self._set_response_ok()
@@ -149,7 +153,7 @@ class UserDatabase:
 
 def run():
     logging.basicConfig(level=logging.INFO)
-    server_address = ("0.0.0.0", int(os.environ.get("PORT", 5000)))
+    server_address = ("0.0.0.0", int(os.environ.get("PORT", )))
     httpd = MyHTTPServer(server_address, MyHTTPRequestHandler)
     logging.info('Starting httpd...\n')
     try:
